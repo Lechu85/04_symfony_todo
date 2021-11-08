@@ -1,5 +1,6 @@
 <?php
-
+//bandle symfony tutaj precyzujemy
+//jezeli usuniesz jakas linie to serwis np twig znika :)
 return [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
