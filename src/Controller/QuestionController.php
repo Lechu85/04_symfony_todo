@@ -39,15 +39,14 @@ class QuestionController extends AbstractController
     /**
      * @Route("/questions/{slug}", name="app_question_show")
      */
-    public function show($slug, MarkdownHelper $markdownHelper, HubInterface $sentryHub)
+    public function show($slug, MarkdownHelper $markdownHelper)
     {
-        dump($sentryHub->getClient());
 
         if ($this->isDebug) {
             $this->logger->info('jesteśmy w trybie debug');
         }
 
-        throw new \Exception('Bad stuff happend'); // każdy wyjątek leci do sentry.io
+        //throw new \Exception('KOLEJNY BŁĄD, TESTUJEMY'); // każdy wyjątek leci do sentry.io
         //dump($isDebug);
         //dump($this->getParameter('cache_adapter')); -pobiera parametry
 
@@ -59,7 +58,6 @@ class QuestionController extends AbstractController
         $questionText = 'I\'ve been turned into a cat, any *thoughts* on how to turn back? While I\'m **adorable**, I don\'t really care for cat food.';
 
         $parsedQuestionText = $markdownHelper->parse($questionText);
-
 
         //render zwraca objekt Component\HttpFoundation\Response
         return $this->render('question/show.html.twig', [
