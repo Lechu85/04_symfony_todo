@@ -1,0 +1,5 @@
+monolog:
+  channels: [markdown]
+
+  # z kursu symfony casts named autowiring - kilka instancji serwisu
+  #pomimo dodania kanału, nie widac go
