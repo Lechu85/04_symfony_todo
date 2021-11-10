@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\MarkdownHelper;
 use Psr\Log\LoggerInterface;
+use Sentry\State\HubInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,12 +39,15 @@ class QuestionController extends AbstractController
     /**
      * @Route("/questions/{slug}", name="app_question_show")
      */
-    public function show($slug, MarkdownHelper $markdownHelper)
+    public function show($slug, MarkdownHelper $markdownHelper, HubInterface $sentryHub)
     {
+        dump($sentryHub->getClient());
+
         if ($this->isDebug) {
             $this->logger->info('jesteśmy w trybie debug');
         }
 
+        throw new \Exception('Bad stuff happend'); // każdy wyjątek leci do sentry.io
         //dump($isDebug);
         //dump($this->getParameter('cache_adapter')); -pobiera parametry
 
