@@ -3,10 +3,10 @@ version: '3'
 services:
 ###> doctrine/doctrine-bundle ###
   database:
-    image: 'mysql:5.7'
+    image: 'mysql:8.0' # jak zmieniamy tutaj wersje mysql powinnsmy tez zmienic w doctrine.yaml
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: main
+      MYSQL_DATABASE: main #tworzy odrazu baze danych, nie trzeba robic create
     ports:
       # To allow the host machine to access the ports below, modify the lines below.
       # For example, to allow the host to connect to port 3306 on the container, you would change

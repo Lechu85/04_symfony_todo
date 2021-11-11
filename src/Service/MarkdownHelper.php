@@ -23,7 +23,7 @@ class MarkdownHelper
         $this->markdownParser = $markdownParser;
         $this->cache = $cache;
         $this->isDebug = $isDebug;
-        dump($isDebug);
+        //dump($isDebug);
         $this->logger = $mdLogger;
     }
 
