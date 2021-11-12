@@ -40,7 +40,7 @@ class Question
     /**
      * @ORM\Column(type="integer")
      */
-    private $votes;
+    private $votes = 0;
 
     public function getId(): ?int
     {
@@ -95,14 +95,38 @@ class Question
         return $this;
     }
 
-    public function getVotes(): ?int
+    public function getVotes(): int //było ?int
     {
         return $this->votes;
+    }
+
+    /*
+     * Potrzebujemy głosy zwrócić jako stroni z plusem :)
+     * Twig to pole odczyta jako votesString
+     */
+    public function getVotesString(): string
+    {
+       $prefix = $this->getVotes() >= 0 ? '+' : '-';
+       return sprintf('%s %d', $prefix, abs($this->getVotes()));
     }
 
     public function setVotes(int $votes): self
     {
         $this->votes = $votes;
+
+        return $this;
+    }
+
+    public function upVote(): self
+    {
+        $this->votes++;
+
+        return $this;
+    }
+
+    public function downVote(): self
+    {
+        $this->votes--;
 
         return $this;
     }

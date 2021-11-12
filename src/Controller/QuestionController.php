@@ -9,9 +9,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Sentry\State\HubInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
+use function Sentry\init;
 
 class QuestionController extends AbstractController
 {
@@ -78,6 +80,8 @@ EOF
             $question->setAskedAt(new \DateTime(sprintf('-%d days', rand(1, 100))));
         }
 
+        $question->setVotes(rand(-20, 50));
+
         $entityManager->persist($question);
         $entityManager->flush();
 
@@ -125,6 +129,7 @@ EOF
 
     /**
      * Poprzednia wersja funkcji z kursu, do poglądu
+     * Stary czyli ta wersje jest lepsza.
      *
      * @Route("/questions/old/{slug}", name="app_question_show_old")
      */
@@ -154,4 +159,24 @@ EOF
         ]);
     }
 
+    /**
+     * @Route("/questions/{slug}/vote", name="app_question_vote", methods="POST")
+     */
+    public function questionVote(Question $question, Request $request, EntityManagerInterface $entityManager)
+    {
+        $direction = $request->request->get('direction');//pobiera element direction
+
+        if ($direction === 'up') {
+            $question->upVote();
+        } elseif ($direction === 'down') {
+            $question->downVote();
+        }
+        //inne ignorujemy
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_question_show', [
+            'slug' => $question->getSlug(),
+        ]);
+    }
 }
