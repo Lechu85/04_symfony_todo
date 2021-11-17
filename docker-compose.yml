@@ -19,7 +19,7 @@ services:
 
   adminer:
     image: adminer
-    container_name: php-project-001-adminer
+    container_name: phpadminer
     ports:
       - 8888:8080
 

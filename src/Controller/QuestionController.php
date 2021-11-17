@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Question;
+use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use App\Service\MarkdownHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -81,15 +82,14 @@ class QuestionController extends AbstractController
             $this->logger->info('jesteśmy w trybie debug');
         }
 
-        $answers = [
-            'Make sure your cat is sitting',
-            'Honestly, I like furry `shoes` better than my cat',
-            'Maybe... Try saying the spell backwards',
-        ];
+        //w momencie kiedy zaczynamy korzystać z tablicy $answers doctrine wtedy zapytuje o to.
+        //lazy load tzw.
+        $answers = $question->getAnswers();//nie dajemyu question_id ani ->ghetId()
+
+
 
         return $this->render('question/show.html.twig', [
             'question' => $question,
-            'answers' => $answers,
         ]);
     }
 
