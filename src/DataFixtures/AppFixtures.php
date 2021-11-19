@@ -7,6 +7,7 @@ use App\Entity\Question;
 use App\Entity\Tag;
 use App\Factory\AnswerFactory;
 use App\Factory\QuestionFactory;
+use App\Factory\TagFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -14,8 +15,17 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        //QuestionFactory::new()->create();
-        $questions = QuestionFactory::createMany(20);
+        TagFactory::createMany(100);
+        //dla tych 20 Pytań chcemy powiazać z przypadkowymi Tagami
+
+        $questions = QuestionFactory::createMany(20, function() {
+            return [
+                'tags' => TagFactory::randomRange(0, 5) # to zwraca zawsze jednen wynik. Random wykonywane jest tylko raz w tym przypadku
+            ];
+        }); //drugi parametr to ovveride (nadpisany)
+
+
+        //drgui parasmetr to to co chcemy nadpisac.
         //QuestionFactory::createOne();
         QuestionFactory::new()
             ->unpublished()
@@ -46,6 +56,9 @@ class AppFixtures extends Fixture
         $question = QuestionFactory::createOne()->object();//lazy way using our factory - zwraca to proxy object+
 
 
+        #RĘCZENE DODANIE RELACJI QUESTION - TAG
+
+        /*
         //kiedy mieszasz ten FDoundary code ze zwykłym, zxasami dostajesz błąd.
         //aby temu zaradzić dodac trzeba ->object();
         $tag1 = new Tag();
@@ -65,9 +78,10 @@ class AppFixtures extends Fixture
 
         $manager->flush();
 
-        $question->removeTag($tag1);//tak kasujemy - ale jak podać mu obiekt, któy kasujemy
-
-
+        //$question->removeTag($tag1);//tak kasujemy - ale jak podać mu obiekt, któy kasujemy
+        //$manager->flush();
+*/
+#---   END RECZENE DODANIE QUESTION - TAG
         //inne ręczna metoda dodania do bazy danych w relacji
 /*
         $question = QuestionFactory::createOne();

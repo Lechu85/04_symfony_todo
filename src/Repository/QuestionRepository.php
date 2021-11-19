@@ -30,10 +30,19 @@ class QuestionRepository extends ServiceEntityRepository
 
         return $this->addIsAskedQueryBuilder($qb)
             ->orderBy('q.askedAt','DESC')
+            ->leftJoin('q.tags', 'tag') //left ponieważ chcemy dużo tagów dla pytania
+            ->addSelect('tag')
+            ->getQuery()
+            ->getResult()
+        ;//joinig many to one wygląda tak samo jak joinig many to many
+
+        //to zapytanie generuje błąd n+1 problem dla pobioerania tagów, wyżej rozwiązanie
+        /*return $this->addIsAskedQueryBuilder($qb)
+            ->orderBy('q.askedAt','DESC')
             ->getQuery()
             ->getResult()
             //->getOneOrNullResult()
-        ;
+        ;*/
     }
 
     public function addIsAskedQueryBuilder(QueryBuilder $qb) : QueryBuilder
