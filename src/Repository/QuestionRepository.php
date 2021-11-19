@@ -20,10 +20,23 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
-    // /**
-    //  * @return Question[] Returns an array of Question objects
-    //  */
 
+    public function createAskedOrderByNewestQueryBuilder(): QueryBuilder
+    {
+        return $this->addIsAskedQueryBuilder()
+            ->orderBy('q.askedAt','DESC')
+            ->leftJoin('q.tags', 'tag') //left ponieważ chcemy dużo tagów dla pytania
+            ->addSelect('tag')
+        ;//joinig many to one wygląda tak samo jak joinig many to many
+
+    }
+
+
+    /**
+    * @return Question[] Returns an array of Question objects
+    */
+    /*
+     * Wersja poprzednia bez paginatora. Może się przydać do wyświetlenia poprostu np 10 pozycji.
     public function findAllAskedOrderByNewest()
     {
         $qb =  $this->createQueryBuilder('q');
@@ -37,18 +50,25 @@ class QuestionRepository extends ServiceEntityRepository
         ;//joinig many to one wygląda tak samo jak joinig many to many
 
         //to zapytanie generuje błąd n+1 problem dla pobioerania tagów, wyżej rozwiązanie
-        /*return $this->addIsAskedQueryBuilder($qb)
-            ->orderBy('q.askedAt','DESC')
-            ->getQuery()
-            ->getResult()
-            //->getOneOrNullResult()
-        ;*/
+//        return $this->addIsAskedQueryBuilder($qb)
+//            ->orderBy('q.askedAt','DESC')
+//            ->getQuery()
+//            ->getResult()
+//            //->getOneOrNullResult()
+//        ;
+    }*/
+
+    private function addIsAskedQueryBuilder(QueryBuilder $qb = null): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder($qb)
+            ->andWhere('q.askedAt IS NOT NULL');
     }
 
-    public function addIsAskedQueryBuilder(QueryBuilder $qb) : QueryBuilder
+    private function getOrCreateQueryBuilder(QueryBuilder $qb = null): QueryBuilder
     {
-        return $qb->andWhere('q.askedAt IS NOT NULL');
+        return $qb ?: $this->createQueryBuilder('q');
     }
+
     /*
     public function findOneBySomeField($value): ?Question
     {

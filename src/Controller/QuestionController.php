@@ -7,6 +7,8 @@ use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use App\Service\MarkdownHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Psr\Log\LoggerInterface;
 use Sentry\State\HubInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,22 +31,37 @@ class QuestionController extends AbstractController
         $this->isDebug = $isDebug;
     }
     /**
-     * @Route("/", name="app_homepage")
+     * dodalismy dla pagera {pager}, musimy być ostrozni, ponieważ to jest wildcard.
+     * Może zepsuć rout jezeli przypasuje pierwszy.
+     * <\d+> - ma być chyba liczba - digit
+     * Po dodaniu {page} do routa, trzeba przekazac parametr init $page = 1 i wywalamy obiekt Request. z parametrów funkcji
+     *
+     * @Route("/{page<\d+>}", name="app_homepage")
      */
     //public function homepage(EntityManagerInterface $entityManager) // tutaj przez entity managera wczytujemy pozniej repozytorium.,
-    public function homepage(QuestionRepository $repository) // tutaj przez entity managera wczytujemy pozniej repozytorium.,
+    public function homepage(QuestionRepository $repository, int $page = 1) // tutaj przez entity managera wczytujemy pozniej repozytorium.,
     {
 
         //$repository = $entityManager->getRepository(Question::class);
-        $questions = $repository->findAllAskedOrderByNewest();
-        //$questions = $repository->findBy([], ['askedAt' => 'DESC']);
+        //$questions = $repository->findAllAskedOrderByNewest(); //nasza włąsna metoda zwracajaca obiekt, łączenie danych.
+        //$questions = $repository->findBy([], ['askedAt' => 'DESC']); - standardowaq metoda
+        $queryBuilder = $repository->createAskedOrderByNewestQueryBuilder(); //nasza włąsna metoda zwracajaca obiekt, łączenie danych.
+
+        $pagerfanta = new Pagerfanta(
+            new QueryAdapter($queryBuilder)
+        );
+        $pagerfanta->setMaxPerPage(5);
+
+        $pagerfanta->setCurrentPage($page);
+        //$pagerfanta->setCurrentPage($request->query->get('page', 1)); dla innego typu adresu ?page=2
+        //Musi być kolejność tych dwóch powyższych m,etod
 
 
         //$html = $twigEnvironment->render('question/homepage.html.twig'); //użycie w taki sposó zwraca string z html
         //return new Response($html);
 
         return $this->render('question/homepage.html.twig', [
-            'questions' => $questions,
+            'pager' => $pagerfanta, //obiekt pagera mozemy traktować jak tablice.
         ]);
         //return new Response('Pierwszy tekst w aplikacji :) ');
     }
