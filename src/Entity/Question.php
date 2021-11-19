@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -55,9 +57,15 @@ class Question
      */
     private $answers;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="questions")
+     */
+    private $tags;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,6 +100,26 @@ class Question
     public function getQuestion(): ?string
     {
         return $this->question;
+    }
+
+    public function getQuestionText(): string
+    {
+        //dodatkowe zaberzpieczenie, któe nie jest konieczne, bo pole to jest wymagane przez pole
+        //ale podczas tworzenia mjest moment, kiedy jeszcze pytanie nie jkest podane
+        //przed tym sięzabezpieczamy
+        if (!$this->getQuestion()) {
+            return '';
+        }
+
+        //dzięki tej metodzie nie musimy używać zapisu:
+        //{{ answer.question.question }} ale {{ answer.question }} w twigu.
+        return (string) $this->getQuestion()->getQuestion();
+        //zabezpieczamy żeby był strongh (string)
+        //technicznie jest to mozliwe, żeby był tutaj null
+
+        //question qwuestion wynika z głupiego nazwania pola w bazie danych. Baza question i tressc zapytania w question
+
+
     }
 
     public function setQuestion(string $question): self
@@ -159,9 +187,8 @@ class Question
 
     public function getApprovedAnswers(): Collection
     {
-        return $this->answers->filter(function(Answer $answer) {
-            return $answer->isApproved();
-        });
+
+        return $this->answers->matching(AnswerRepository::createApprovedCriteria());
     }
 
     public function addAnswer(Answer $answer): self
@@ -182,6 +209,30 @@ class Question
                 $answer->setQuestion(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        $this->tags->removeElement($tag);
 
         return $this;
     }

@@ -64,8 +64,6 @@ class QuestionController extends AbstractController
     /**
      * Nowsza wersja funklcji show
      *
-     * @Route("/questions/{slug}", name="app_question_show")
-     *
      * skrócona wersja dzieki sensio framework extra bundle
      * bierze nazwe zmiennej z czesci Rouite, czyli SLUG i szyka takeij w encji
      *
@@ -74,6 +72,9 @@ class QuestionController extends AbstractController
      *
      * czasami jak bardziej skomplikowany przypadek to nie zadziałą.
      * Dla większości przypadkó podstawowych jest ok
+     *
+     * @Route("/questions/{slug}", name="app_question_show")
+
      */
     public function show(Question $question)
     {
@@ -84,7 +85,7 @@ class QuestionController extends AbstractController
 
         //w momencie kiedy zaczynamy korzystać z tablicy $answers doctrine wtedy zapytuje o to.
         //lazy load tzw.
-        $answers = $question->getAnswers();//nie dajemyu question_id ani ->ghetId()
+        //$answers = $question->getAnswers();//nie dajemyu question_id ani ->ghetId()
 
 
 
