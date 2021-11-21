@@ -8,6 +8,7 @@ use App\Entity\Tag;
 use App\Factory\AnswerFactory;
 use App\Factory\QuestionFactory;
 use App\Factory\TagFactory;
+use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -43,6 +44,11 @@ class AppFixtures extends Fixture
             ];
         })->needsApproval()->many(20)->create();
 
+        UserFactory::createOne(['email' => 'leszek.leszek@gmail.com']);
+        UserFactory::createMany(10);
+
+        $manager->flush();
+
         //tutaj ważne, żebyśmy najpierw stworzyli pytanbia a później ten kod z odpowiedziami.
 
 
@@ -53,53 +59,9 @@ class AppFixtures extends Fixture
         //$answer->setQuestion($question);//nie dajemy ->getId()!!. wstawiamy cały obiekt.
 
         //ręczne dodawanie pytania i tagu
-        $question = QuestionFactory::createOne()->object();//lazy way using our factory - zwraca to proxy object+
+        //$question = QuestionFactory::createOne()->object();//lazy way using our factory - zwraca to proxy object+
 
 
-        #RĘCZENE DODANIE RELACJI QUESTION - TAG
 
-        /*
-        //kiedy mieszasz ten FDoundary code ze zwykłym, zxasami dostajesz błąd.
-        //aby temu zaradzić dodac trzeba ->object();
-        $tag1 = new Tag();
-        $tag1->setName('dinozaur');
-
-        $tag2 = new Tag();
-        $tag2->setName('monster trak');
-
-        //$question->addTag($tag1);
-        //$question->addTag($tag2);
-
-        $tag1->addQuestion($question);
-        $tag2->addQuestion($question);
-
-        $manager->persist($tag1);
-        $manager->persist($tag2);
-
-        $manager->flush();
-
-        //$question->removeTag($tag1);//tak kasujemy - ale jak podać mu obiekt, któy kasujemy
-        //$manager->flush();
-*/
-#---   END RECZENE DODANIE QUESTION - TAG
-        //inne ręczna metoda dodania do bazy danych w relacji
-/*
-        $question = QuestionFactory::createOne();
-        $answer1 = new Answer();
-        $answer1->setContent('Przykładowa odpowiedź. Testuujemy mechanizmy. Przykładowa odpowiedź. Testuujemy mechanizmy. ');
-        $answer1->setUsername('Artur');
-
-        $answer2 = new Answer();
-        $answer2->setContent('Przykładowa odpowiedź. Testuujemy mechanizmy. Przykładowa odpowiedź. Testuujemy mechanizmy. ');
-        $answer2->setUsername('Tomek');
-
-        $question->addAnswer($answer1);
-        $question->addAnswer($answer2);
-
-        $manager->persist($answer1);
-        $manager->persist($answer2);
-
-        $manager->flush();
-*/
     }
 }
