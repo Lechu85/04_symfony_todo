@@ -125,6 +125,19 @@ class QuestionController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/questions/edit/{slug}", name="app_question_edit")
+     */
+    public function edit(Question $question)
+    {
+        //info blokujemy dostęp - tylko zalogowany z podaną rolą
+        $this->denyAccessUnlessGranted('EDIT', $question);
+
+        return $this->render('question/edit.html.twig', [
+            'question' => $question,
+        ]);
+    }
+
 
     /**
      * Poprzednia wersja funkcji z kursu, do poglądu

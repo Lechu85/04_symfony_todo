@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Security;
-
+// drugi wygenerowany z komendy make:auth
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

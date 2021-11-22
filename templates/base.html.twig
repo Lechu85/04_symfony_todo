@@ -36,15 +36,15 @@
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             <div class="dropdown">
                 <button
-                        class="dropdown-toggle btn"
-                        type="button"
-                        id="user-dropdown"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                >
+                    class="dropdown-toggle btn"
+                    type="button"
+                    id="user-dropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                > {{ app.user.firstName }}
                     <img
-                            src="{{ app.user.avatarUri }}"
-                            alt="{{ app.user.displayName }} Avatar">
+                        src="{{ app.user.avatarUri }}"
+                        alt="{{ app.user.displayName }} Avatar">
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown">
                     {% if is_granted('IS_IMPERSONATOR') %}
@@ -64,7 +64,7 @@
             </div>
         {% else %}
             <a href="{{ path('app_login') }}" class="nav-link text-black-50">Log In</a>
-            <a href="{#  {{ path('app_register') }} #}" class="btn btn-dark">Sign up</a>
+            <a href="{{ path('app_register') }}" class="btn btn-dark">Sign up</a>
         {% endif %}
     </nav>
 </div>

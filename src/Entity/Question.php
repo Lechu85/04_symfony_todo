@@ -62,6 +62,12 @@ class Question
      */
     private $tags;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="questions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $owner;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -233,6 +239,18 @@ class Question
     public function removeTag(Tag $tag): self
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }

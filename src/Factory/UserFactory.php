@@ -35,14 +35,12 @@ final class UserFactory extends ModelFactory
     {
         parent::__construct();
 
-        // TODO inject services if required (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services)
         $this->passwordHasher = $passwordHasher;
     }
 
     protected function getDefaults(): array
     {
         return [
-            // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'email' => self::faker()->email(),
             'firstName' => self::faker()->firstName(),
             'plainPassword' => 'tada',

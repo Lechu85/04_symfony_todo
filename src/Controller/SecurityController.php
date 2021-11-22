@@ -25,6 +25,6 @@ class SecurityController extends AbstractController
     #[Route('/logout', name: 'app_logout')]
     public function logout()
     {
-        dd('wylogowywanie');
+        throw new \Exception('logout() should never be reached');
     }
 }
