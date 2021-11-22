@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -21,9 +22,15 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LoginFormAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
+//info zakomentowany przykąłd to było gdy ręcznierobiliśmy formy
+//info już nie trzeba implementowac, i dziedziczyć, bo klasa AbstractLoginFormAuthenticator  robi to wszystko
+//class LoginFormAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
+class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
+    use TargetPathTrait;
+
     private UserRepository $userRepository;
     private RouterInterface $router;
 
@@ -34,16 +41,6 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
 
         $this->userRepository = $userRepository;
         $this->router = $router;
-    }
-
-    //info metoda ta jest wykonywana na początku każdego Requesta - jest top firewall
-    public function supports(Request $request): ?bool
-    {
-        // TODO: Implement supports() method.
-
-        return $request->getPathInfo() === '/login' & $request->isMethod('POST');
-        //info jezeli true, czyli jest "/login" i post wykonuje się metoda kolejna authenticate()
-        //info jeżeli false request kontynuuje jak normalny kontroler i strona jest generowana
     }
 
     //info serce naszego authenticate - zadaniem tej klasy jest oznaczenie kim jest ten user który próbuje się logować.
@@ -107,42 +104,21 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
 
+        if ($target = $this->getTargetPath($request->getSession(), $firewallName)) {
+            return new RedirectResponse($target);
+        }
+
         return new RedirectResponse(
+            //$this->router->generate('app_homepage')
             $this->router->generate('app_homepage')
         );
 
     }
 
-    //info są dwa sposoby niewłąściwej autentykacji
-    //info jeżeli nie ma usera o takim identyfikatorze tu jest emailu
-    //info lub jeżeli nie pasuej hasło.
-    //info oba kończą siętutaj.
-    //info niezaleznie czy jest user czy hasło nie pasuje, zwracany jest jeden wyjątek., symfony konwertuje
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    protected function getLoginUrl(Request $request): string
     {
-
-        //info teraz error mamy w sesji
-        $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
-
-        return new RedirectResponse(
-            $this->router->generate('app_login')
-        );
-
+        return $this->router->generate('app_login');
     }
 
-    public function start(Request $request, AuthenticationException $authException = null): Response
-    {
-        /*
-         * If you would like this class to control what happens when an anonymous user accesses a
-         * protected page (e.g. redirect to /login), uncomment this method and make this class
-         * implement Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface.
-         *
-         * For more details, see https://symfony.com/doc/current/security/experimental_authenticators.html#configuring-the-authentication-entry-point
-         */
 
-        return new RedirectResponse(
-            $this->router->generate('app_login')
-        );
-
-    }
 }

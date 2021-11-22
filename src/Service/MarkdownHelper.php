@@ -4,6 +4,7 @@ namespace App\Service;
 
 use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class MarkdownHelper
@@ -16,8 +17,9 @@ class MarkdownHelper
      * @var LoggerInterface
      */
     private $logger;
+    private Security $security;
 
-    public function __construct(MarkdownParserInterface $markdownParser, CacheInterface $cache, bool $isDebug, LoggerInterface $mdLogger)
+    public function __construct(MarkdownParserInterface $markdownParser, CacheInterface $cache, bool $isDebug, LoggerInterface $mdLogger, Security $security)
     {
 
         $this->markdownParser = $markdownParser;
@@ -25,12 +27,21 @@ class MarkdownHelper
         $this->isDebug = $isDebug;
         //dump($isDebug);
         $this->logger = $mdLogger;
+        $this->security = $security;
     }
 
     public function parse(string $source): string
     {
         if (stripos($source, 'cat') !== false) {
             $this->logger->info('MAMY KOTKA 3333 :) ');
+        }
+
+        //info tu możemy sprawdzić, czy user jest zalogowany
+        //info albo isGranted("IS_AUTHENTICATED_REMEMBERED")
+        if ($this->security->getUser()) {
+            $this->logger->info('Renderujemy markdown dla {user}', [
+                'user' => $this->security->getUser()->getUserIdentifier()
+            ]);
         }
 
         if (!$this->isDebug) {

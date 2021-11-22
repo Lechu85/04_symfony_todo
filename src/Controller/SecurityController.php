@@ -14,6 +14,9 @@ class SecurityController extends AbstractController
     {
         return $this->render('security/login.html.twig',[
             'error' => $authenticationUtils->getLastAuthenticationError(),
+            //info getLastUsername to jest helper
+            //todo - czy to nie działą w naszym customowym logowaniu? :)
+            'last_username' => $authenticationUtils->getLastUsername(),
             //info jest tak ponieważ w sesji daliśmy index: Security::AUTHENTICATION_ERROR
             //info teraz mechanizm odczytuje ją.
         ]);

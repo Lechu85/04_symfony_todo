@@ -28,6 +28,7 @@
                         })
                     }) }}
             >
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 <button
                         class="vote-up btn btn-link"
                         name="direction"
@@ -40,6 +41,7 @@
                         value="down"
                         {{ stimulus_action('answer-vote', 'clickVote') }}
                 ><i class="far fa-arrow-alt-circle-down"></i></button>
+                {% endif %}
                 <span>+ <span {{ stimulus_target('answer-vote', 'voteTotal') }}>{{ answer.votes }}</span></span>
             </div>
         </div>

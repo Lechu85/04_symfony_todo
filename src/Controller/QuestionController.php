@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Psr\Log\LoggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sentry\State\HubInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,6 +60,11 @@ class QuestionController extends AbstractController
 
         //$html = $twigEnvironment->render('question/homepage.html.twig'); //użycie w taki sposó zwraca string z html
         //return new Response($html);
+        dump($this->getUser());//jesli zalogowany to zwróci dane.
+
+
+
+
 
         return $this->render('question/homepage.html.twig', [
             'pager' => $pagerfanta, //obiekt pagera mozemy traktować jak tablice.
@@ -68,11 +74,19 @@ class QuestionController extends AbstractController
 
     /**
      * @Route("/questions/new")
+     * @IsGranted("ROLE_USER")
      */
     public function new(EntityManagerInterface $entityManager)
     {
+        //info blokujemy dostep do metody
+        //info jezeli rola nie przepusciła, kod niżej nie jest wykonywany
+        //$this->denyAccessUnlessGranted('ROLE_USER');
 
+        if (!$this->isGranted('ROLE_USER')) {
+            throw $this->createAccessDeniedException('Brak dostępu dla Ciebie');
+        }
 
+    //dodać z kursu event dispatcher.strefa kursów.
         return new Response('Opcja zapisywania w przygotowaniu.');
 
     }
