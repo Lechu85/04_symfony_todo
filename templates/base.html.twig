@@ -5,7 +5,8 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
     {% block stylesheets %}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Spartan&display=swap">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+              integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"/>
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
     {% block javascripts %}
@@ -14,63 +15,78 @@
 </head>
 <body>
 
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light px-1" style="height: 60px;">
-        <a class="navbar-brand" href="{{ path('app_homepage') }}">
-            <p class="pl-2 d-inline font-weight-bold" style="color: #444;">
-                Cauldron Overflow</p>
-        </a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_popular_answers') }}">Answers</a>
-                </li>
-                {% if is_granted('ROLE_ADMIN') %}
+    <div class="container-xl">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light px-1" style="height: 60px;">
+            <a class="navbar-brand" href="{{ path('app_homepage') }}">
+                <p class="pl-2 d-inline font-weight-bold" style="color: #444;">
+                    Cauldron Overflow</p>
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_dashboard') }}">Admin</a>
+                        <a class="nav-link" href="{{ path('app_popular_answers') }}">Answers</a>
                     </li>
-                {% endif %}
-            </ul>
-        </div>
+                    {% for link, text in cms_menu %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ link }}">{{ text }}</a>
+                        </li>
+                    {% endfor %}
 
-        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <div class="dropdown">
-                <button
-                    class="dropdown-toggle btn"
-                    type="button"
-                    id="user-dropdown"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                > {{ app.user.firstName }}
-                    <img
-                        src="{{ app.user.avatarUri }}"
-                        alt="{{ app.user.displayName }} Avatar">
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown">
-                    {% if is_granted('IS_IMPERSONATOR') %}
-                        <li>
-                            <a class="dropdown-item" href="{{ path('app_homepage', {
-                                '_switch_user': '_exit'
-                            }) }}">Exit Impersonation</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('admin_dashboard') }}">Admin</a>
                         </li>
                     {% endif %}
-                    <li>
-                        <a class="dropdown-item" href="{# {{ path('app_2fa_enable') }} #}">Enble 2fa</a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="{{ path('app_logout') }}">Log Out</a>
-                    </li>
                 </ul>
             </div>
-        {% else %}
-            <a href="{{ path('app_login') }}" class="nav-link text-black-50">Log In</a>
-            <a href="{{ path('app_register') }}" class="btn btn-dark">Sign up</a>
-        {% endif %}
-    </nav>
-</div>
-{% block body %}{% endblock %}
-<footer class="mt-5 p-3 text-center">
-    Made with <i style="color: red;" class="fa fa-heart"></i> by the guys and gals at <a style="color: #444; text-decoration: underline;" href="https://symfonycasts.com">SymfonyCasts</a>
-</footer>
+
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <div class="dropdown">
+                    <button
+                            class="dropdown-toggle btn"
+                            type="button"
+                            id="user-dropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                    > {{ app.user.firstName }}
+                        <img
+                                src="{{ app.user.avatarUri }}"
+                                alt="{{ app.user.displayName }} Avatar">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown">
+                        {% if is_granted('IS_IMPERSONATOR') %}
+                            <li>
+                                <a class="dropdown-item" href="{{ path('app_homepage', {
+                                    '_switch_user': '_exit'
+                                }) }}">Exit Impersonation</a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a class="dropdown-item" href="{# {{ path('app_2fa_enable') }} #}">Enble 2fa</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_logout') }}">Log Out</a>
+                        </li>
+                    </ul>
+                </div>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="nav-link text-black-50">Log In</a>
+                <a href="{{ path('app_register') }}" class="btn btn-dark">Sign up</a>
+            {% endif %}
+        </nav>
+
+        {% for flash in app.flashes('success') %}
+            <div class="alert alert-success">{{ flash|raw }}</div>
+        {% endfor %}
+        {% for flash in app.flashes('error') %}
+            <div class="alert alert-danger">{{ flash|raw }}</div>
+        {% endfor %}
+
+        {% block body %}{% endblock %}
+        <footer class="mt-5 p-3 text-center">
+            Made with <i style="color: red;" class="fa fa-heart"></i> by the guys and gals at <a style="color: #444; text-decoration: underline;" href="https://symfonycasts.com">SymfonyCasts</a>
+        </footer>
+
+    </div>
 </body>
 </html>
