@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    default_admin_email: work@sotech.pl
 
 services:
     # default configuration for services in *this* file
@@ -12,6 +13,7 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
             $isDebug: '%kernel.debug%'
+            $adminEmail: "%env(string:default:default_admin_email:ADMIN_EMAIL)%"
         #    Psr\Log\LoggerInterface $mdLogger: '@monolog.logger.markdown' # z kursu symfony casts przypisanie
 
     # makes classes in src/ available to be used as services

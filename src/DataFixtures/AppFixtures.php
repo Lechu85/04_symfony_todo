@@ -6,6 +6,7 @@ use App\Entity\Answer;
 use App\Entity\Question;
 use App\Entity\Tag;
 use App\Factory\AnswerFactory;
+use App\Factory\ProductFactory;
 use App\Factory\QuestionFactory;
 use App\Factory\TagFactory;
 use App\Factory\UserFactory;
@@ -32,7 +33,7 @@ class AppFixtures extends Fixture
             ->unpublished()
             ->createMany(5);
 
-        AnswerFactory::createMany(100, function () use ($questions){
+        AnswerFactory::createMany(50, function () use ($questions){
             return [
                 'question' => $questions[array_rand($questions)],
             ];
@@ -53,7 +54,9 @@ class AppFixtures extends Fixture
             'email' => 'abraca_user@example.com',
         ]);
 
-        UserFactory::createMany(10);
+        //UserFactory::createMany(10);
+
+        ProductFactory::new()->createMany(20);
 
         $manager->flush();
 

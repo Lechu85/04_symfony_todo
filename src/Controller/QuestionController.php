@@ -12,9 +12,11 @@ use Pagerfanta\Pagerfanta;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sentry\State\HubInterface;
+use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 use function Sentry\init;
@@ -63,15 +65,31 @@ class QuestionController extends AbstractController
         dump($this->getUser());//jesli zalogowany to zwróci dane.
 
 
-
-
-
         return $this->render('question/homepage.html.twig', [
             'pager' => $pagerfanta, //obiekt pagera mozemy traktować jak tablice.
         ]);
         //return new Response('Pierwszy tekst w aplikacji :) ');
     }
 
+    /**
+     * @Route("/questions/send", name="app_question_sendf")
+     * @IsGranted("ROLE_USER")
+     */
+    public function sendInfo(MailerInterface $mailer, string $adminEmail)
+    {
+
+        $mailer->send((new NotificationEmail())
+            ->subject('New comment posted')
+            ->htmlTemplate('emails/comment_notification.html.twig')
+            ->from($adminEmail)
+            ->to('pomoc@sotech.pl')
+            ->context(['comment' => 'aaaaaa'])
+        );
+
+        dump('Wysyłamy');
+        return new Response('Opcja zapisywania w przygotowaniu.');
+
+    }
     /**
      * @Route("/questions/new")
      * @IsGranted("ROLE_USER")
