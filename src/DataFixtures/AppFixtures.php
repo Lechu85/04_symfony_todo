@@ -6,6 +6,7 @@ use App\Entity\Answer;
 use App\Entity\Question;
 use App\Entity\Tag;
 use App\Factory\AnswerFactory;
+use App\Factory\ArticleFactory;
 use App\Factory\ProductFactory;
 use App\Factory\QuestionFactory;
 use App\Factory\TagFactory;
@@ -53,6 +54,7 @@ class AppFixtures extends Fixture
         UserFactory::createOne([
             'email' => 'abraca_user@example.com',
         ]);
+        //pytanie - jak mamy w encji metode agreeToTerms() to jak jątutaj użyć?
 
         //UserFactory::createMany(10);
 
@@ -72,6 +74,7 @@ class AppFixtures extends Fixture
         //ręczne dodawanie pytania i tagu
         //$question = QuestionFactory::createOne()->object();//lazy way using our factory - zwraca to proxy object+
 
+        //nowe elementy
 
 
     }
