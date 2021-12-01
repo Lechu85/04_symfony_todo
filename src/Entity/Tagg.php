@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity;
+//tagg is for article
+//tag is for question
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,10 +11,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ArticleTag2Repository")
+ * @ORM\Entity(repositoryClass="App\Repository\TaggRepository")
  * @ORM\Table(name="article_tag2")
  */
-class ArticleTag2
+class Tagg
 {
     use TimestampableEntity;
 
@@ -35,7 +37,8 @@ class ArticleTag2
     private $slug;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Article", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Article", mappedBy="
+     * tags")
      */
     private $articles;
 

@@ -4,7 +4,7 @@ namespace App\Factory;
 
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
-use App\Service\UploaderHelper;
+//use App\Service\UploaderHelper;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -56,8 +56,9 @@ final class ArticleFactory extends ModelFactory
             'title' => self::faker()->text(),
             'slug' => self::faker()->text(),
             'heartCount' => self::faker()->randomNumber(),
-            'createdAt' => null, // TODO add DATETIME ORM type manually
-            'updatedAt' => null, // TODO add DATETIME ORM type manually
+            'createdAt' => new \DateTime(), // TODO add DATETIME ORM type manually
+            'updatedAt' => new \DateTime(), // TODO add DATETIME ORM type manually
+            'author' => UserFactory::new()
         ];
     }
 

@@ -4,17 +4,13 @@ namespace App\Command;
 
 use App\Repository\ArticleRepository;
 use App\Repository\UserRepository;
-use phpDocumentor\Reflection\Types\Context;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Service\SendingEmail;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
+
 
 #[AsCommand(
     name: 'app:author-weekly-report:send',
@@ -24,13 +20,14 @@ class AuthorWeeklyReportSendCommand extends Command
 {
     private UserRepository $userRepository;
     private ArticleRepository $articleRepository;
-    private MailerInterface $mailer;
+    private SendingEmail $mailer;
 
-    public function __construct(UserRepository $userRepository, ArticleRepository $articleRepository, MailerInterface $mailer)
+    public function __construct(UserRepository $userRepository, ArticleRepository $articleRepository, SendingEmail $mailer)
     {
         parent::__construct();
         $this->userRepository = $userRepository;
         $this->articleRepository = $articleRepository;
+
         $this->mailer = $mailer;
     }
 
@@ -55,34 +52,22 @@ class AuthorWeeklyReportSendCommand extends Command
         //info drukujemy pasek postępu
         $io->progressStart();
         foreach ($authors as $author) {
-            $io->progressAdvance(count($authors));
+            $io->progressAdvance(count($authors)); //przekłąmuje, bo leci po każdym userze nie tylko tych subskrybujacych
 
             $articles = $this->articleRepository
                 ->findAllPublishedLastWeekByAuthor($author);
-
-            //$io->warning('autor: '.$author->getFirstName());
 
             //Skip authors who do not have published articles for the last week
             if(count($articles) === 0) {
                 continue;
             }
 
-            $email = (new TemplatedEmail())
-                ->from(new Address('test@sotech.pl', 'Sotech test'))
-                ->to(new Address($author->getEmail(), $author->getFirstName()))
-                ->subject('Twój tygodniowy raport')
-                ->htmlTemplate('email/author-weekly-report.html.twig')
-                ->context([
-                    'author' => $author,
-                    'articles' => $articles
-                ]);
-
-            $this->mailer->send($email);
+            $this->mailer->sendAuthorWeeklyReportMessage($author, $articles);
 
         }
         $io->progressFinish();
 
-        $io->success('Tygodniowy raport został wysłany do użytkowników.');
+        $io->success('Tygodniowy raport został wysłany do użytkowników...');
 
         return Command::SUCCESS;
     }

@@ -28,7 +28,7 @@
                     </li>
                     {% for link, text in cms_menu %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ link }}">{{ text }}</a>
+                            <a class="nav-link" href="{{ path(link) }}">{{ text }}</a>
                         </li>
                     {% endfor %}
 
@@ -36,6 +36,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('admin_dashboard') }}">Admin</a>
                         </li>
+
                     {% endif %}
                 </ul>
             </div>
@@ -80,6 +81,12 @@
         {% endfor %}
         {% for flash in app.flashes('error') %}
             <div class="alert alert-danger">{{ flash|raw }}</div>
+        {% endfor %}
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
         {% endfor %}
 
         {% block body %}{% endblock %}

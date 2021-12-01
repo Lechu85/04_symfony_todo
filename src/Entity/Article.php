@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Factory\TaggFactory;
 use App\Repository\CommentRepository;
 use App\Service\UploaderHelper;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,7 +30,7 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Get creative and think of a title!")
+     * @Assert\NotBlank(message="Tytuł jest wymagany.")
      */
     private $title;
 
@@ -66,16 +67,16 @@ class Article
     private $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ArticleTag2", inversedBy="articles")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tagg", inversedBy="articles")
      */
     private $tags;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Tag", inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotNull(message="Please set an author")
+
      */
-    private $author;
+    private $author; // @Assert\NotNull(message="Proszę podać autora artykułu.")
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -237,7 +238,7 @@ class Article
     }
 
     /**
-     * @return Collection|Tag[]
+     * @return Collection|TaggFactory[]
      */
     public function getTags(): Collection
     {
@@ -253,7 +254,7 @@ class Article
         return $this;
     }
 
-    public function removeTag(Tag $tag): self
+    public function removeTag(TaggFactory $tag): self
     {
         if ($this->tags->contains($tag)) {
             $this->tags->removeElement($tag);
@@ -279,12 +280,19 @@ class Article
      */
     public function validate(ExecutionContextInterface $context, $payload)
     {
+        //info custom validation logic with custom error
+        // niestandardowa logika walidacji z niestandardowym błędem
+
         if (stripos($this->getTitle(), 'the borg') !== false) {
-            $context->buildViolation('Um.. the Bork kinda makes us nervous')
-                ->atPath('title')
-                ->addViolation();
+           $context->buildViolation('Wiadomosć z funkcji callback. Do You realy want to yoin the borg?')
+            ->atPath('title')
+            ->addViolation();
         }
     }
+
+
+    /*
+
 
     public function getLocation(): ?string
     {
@@ -313,12 +321,13 @@ class Article
 
         return $this;
     }
-
+*/
     /**
      * @return Collection|ArticleReference[]
      */
+    /*
     public function getArticleReferences(): Collection
     {
         return $this->articleReferences;
-    }
+    }*/
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
+use App\Service\SendingEmail;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +20,10 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 //info dolozylem elemety z kursu symfony casts mailer - zweryfikować
-
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(MailerInterface $mailer, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, VerifyEmailHelperInterface $verifyEmailHelper): Response
+    public function register(SendingEmail $mailer, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, VerifyEmailHelperInterface $verifyEmailHelper): Response
     {
 
         $user = new User();
@@ -34,6 +34,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             //czy tu nie powinno być jeszcze setEmail() i setFirstName()
+            //edit nie, ba na górze jest w create frm $user
             //$user->setFirstName($userModel->firstName);
             //$user->setEmail($userModel->email);
 
@@ -59,37 +60,10 @@ class RegistrationController extends AbstractController
                 ['id' => $user->getId()]
             );
 
-/*
-            $to_email = "receipient@gmail.com";
-            $subject = "Simple Email Test via PHP";
-            $body = "Hi,nn This is test email send by PHP Script";
-            $headers = "From: sender\'s email";
+            $mailer->sendWelcomeMessage($user);
 
-            if (mail($to_email, $subject, $body, $headers)) {
-                echo "Email successfully sent to $to_email...";
-            } else {
-                echo "Email sending failed...";
-            }*/
+            $this->addFlash('success', 'Potwierdź swój email : <a href="'.$signatureComponents->getSignedUrl().' target="_blank">CLICK</a>');
 
-
-            $email = (new TemplatedEmail())
-                ->from(new Address('test@sotech.pl', 'Sotech test'))
-                ->to('work@sotech.pl')//$user->getEmail()
-                ->subject('Pierwszy email z Symfony')
-                ->htmlTemplate('email/welcome.html.twig')
-                ->context([
-                    'user' => $user
-                ]);
-
-
-            $mailer->send($email);
-            dump('MAILER:',$mailer);
-
-            $this->addFlash('success', 'Confirm 3333 your email at: <a href="'.$signatureComponents->getSignedUrl().' target="_blank">CLICK</a>');
-
-
-
-            // do anything else you need here, like send an email
             //return $this->redirectToRoute('app_homepage');
         }
 

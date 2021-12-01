@@ -11,6 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 
+
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -18,17 +19,17 @@ use Zenstruck\Foundry\Proxy;
 
 class ArticleFixtures extends Fixture
 {
-//    private static $articleTitles = [
-//        'Why Asteroids Taste Like Bacon',
-//        'Life on Planet Mercury: Tan, Relaxing and Fabulous',
-//        'Light Speed Travel: Fountain of Youth or Fallacy',
-//    ];
-//
-//    private static $articleImages = [
-//        'asteroid.jpeg',
-//        'mercury.jpeg',
-//        'lightspeed.png',
-//    ];
+    private static $articleTitles = [
+        'Why Asteroids Taste Like Bacon',
+        'Life on Planet Mercury: Tan, Relaxing and Fabulous',
+        'Light Speed Travel: Fountain of Youth or Fallacy',
+    ];
+
+    private static $articleImages = [
+        'asteroid.jpeg',
+        'mercury.jpeg',
+        'lightspeed.png',
+    ];
 
     private $uploaderHelper;
 
@@ -37,7 +38,7 @@ class ArticleFixtures extends Fixture
         $this->uploaderHelper = $uploaderHelper;
     }
 
-    protected function loadData(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $this->createMany(10, 'main_articles', function($count) use ($manager) {
             $article = new Article();

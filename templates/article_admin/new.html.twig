@@ -1,21 +1,10 @@
 {% extends 'content_base.html.twig' %}
 
-{% block javascripts %}
-    {{ parent() }}
-
-    {{ encore_entry_script_tags('admin_article_form') }}
-{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-
-    {{ encore_entry_link_tags('admin_article_form') }}
-{% endblock %}
-
-{% block content_body %}
-    <h1>Launch a new Article! 🚀</h1>
+{% block body %}
+    <h3 class="mt-2">Dodaj nowy artykuł</h3>
 
     {{ include('article_admin/_form.html.twig', {
-        button_text: 'Create!'
+        button_text: 'Dodaj'
     }) }}
+
 {% endblock %}

@@ -1,42 +1,28 @@
 {% extends 'email/emailBase.html.twig' %}
 
 {% block content %}
-        <hr>
-        <spacer size="20"></spacer>
-        <row>
-            <columns>
+    <hr>
+    <br size="20">
+    <table>
+        <tr>
+            <td>
                 <p>
                     What a week {{ email.toName }}! Here's a quick review of what you've been up to on the Space Bar this week
                 </p>
-            </columns>
-        </row>
-        <row>
-            <columns>
-                <table>
-                    <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Comments</th>
-                    </tr>
-                    {% for article in articles %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ article.title }}</td>
-                            <td>{{ article.comments|length }}</td>
-                        </tr>
-                    {% endfor %}
-
-                </table>
-            </columns>
-        </row>
-        <row>
-            <columns>
-                <center>
-                    <spacer size="20"></spacer>
-                    <button href="{{ url('app_homepage') }}">Check on the Space Bar</button>
-                    <spacer size="20"></spacer>
-                </center>
-            </columns>
-        </row>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ include('email/_report-table.html.twig') }}
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">
+                <br>
+                <button href="{{ url('app_homepage') }}">Check on the Space Bar</button>
+                <br>
+            </td>
+        </tr>
+    </table>
 
 {% endblock %}

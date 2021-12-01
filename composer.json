@@ -16,6 +16,7 @@
         "doctrine/orm": "^2.10",
         "easycorp/easyadmin-bundle": "^3",
         "knplabs/knp-markdown-bundle": "^1.9",
+        "knplabs/knp-snappy-bundle": "^1.8",
         "knplabs/knp-time-bundle": "^1.17",
         "league/html-to-markdown": "^5.0",
         "nelmio/cors-bundle": "^2.1",

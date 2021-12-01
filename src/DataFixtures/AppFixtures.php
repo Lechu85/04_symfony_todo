@@ -21,6 +21,8 @@ class AppFixtures extends Fixture
         TagFactory::createMany(100);
         //dla tych 20 Pytań chcemy powiazać z przypadkowymi Tagami
 
+        ArticleFactory::createMany(20);
+
         $questions = QuestionFactory::createMany(20, function() {
             return [
                 'tags' => TagFactory::randomRange(0, 5) # to zwraca zawsze jednen wynik. Random wykonywane jest tylko raz w tym przypadku
@@ -47,6 +49,7 @@ class AppFixtures extends Fixture
         })->needsApproval()->many(20)->create();
 
         UserFactory::createOne([
+            'firstName' => 'Leszek',
             'email' => 'leszek.leszek@gmail.com',
             'roles' => ['ROLE_ADMIN'],
         ]);
