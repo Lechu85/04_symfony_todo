@@ -74,9 +74,9 @@ class Article
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
-
+     * @Assert\NotNull(message="Proszę podać autora artykułu")
      */
-    private $author; // @Assert\NotNull(message="Proszę podać autora artykułu.")
+    private $author;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)

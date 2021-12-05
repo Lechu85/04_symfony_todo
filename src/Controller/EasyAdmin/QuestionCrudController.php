@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\EasyAdmin;
 
 use App\Entity\Question;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;

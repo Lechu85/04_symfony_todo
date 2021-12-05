@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\Model\RegistrationFormModel;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Service\SendingEmail;
@@ -25,29 +26,27 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(SendingEmail $mailer, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, VerifyEmailHelperInterface $verifyEmailHelper): Response
     {
+        //info mamy tutaj user model, bo zrobilismy specjalną klase model bo są różne dziwne pola :)
+        $form = $this->createForm(RegistrationFormType::class);
 
-        $user = new User();
-        //$userModel = $form->getData();
-        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            //czy tu nie powinno być jeszcze setEmail() i setFirstName()
-            //edit nie, ba na górze jest w create frm $user
-            //$user->setFirstName($userModel->firstName);
-            //$user->setEmail($userModel->email);
 
+            /** @var RegistrationFormModel $userModel */
+            $userModel = $form->getData();
+
+            $user = new User();
+            $user->setEmail($userModel->email);
             $user->setPassword(
             $userPasswordHasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $userModel->plainPassword
                 )
             );
 
-            //if (true === $userModel->agreeTerms) {
-            //    $user->agreeToTerms();
-            //}
+            if (true === $userModel->agreeTerms) {
+                $user->agreeToTerms();
+            }
             //$user->setSubscribeToNewsletter($userModel->subscribeToNewsletter);
 
             $entityManager->persist($user);

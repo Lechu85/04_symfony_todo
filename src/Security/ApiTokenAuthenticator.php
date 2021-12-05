@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationExc
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
-/*
+
 class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 {
     private $apiTokenRepo;
@@ -84,4 +84,4 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         return false;
     }
 }
-*/
+

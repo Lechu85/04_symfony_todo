@@ -39,3 +39,4 @@ services:
 
 
     Psr\Log\LoggerInterface $mdLogger: '@monolog.logger.markdown' # z kursu symfony casts przypisanie
+

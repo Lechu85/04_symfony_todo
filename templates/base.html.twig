@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     {% block stylesheets %}
+
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Spartan&display=swap">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
               integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"/>
+
+        <link rel="stylesheet"href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic"/>
+
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
-    {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-    {% endblock %}
+
 </head>
 <body>
 
@@ -95,5 +97,14 @@
         </footer>
 
     </div>
+
+
+
+    {% block javascripts %}
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        {# usunac jquery, narazie dla starej wersji autoco[plete potrzebny i tyle :)  #}
+
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
 </body>
 </html>

@@ -34,6 +34,8 @@ class UserRepository extends ServiceEntityRepository
 
     /**
      * @return User[]
+     *
+     * NOTE: this return array of User object
      */
     public function findAllMatching(string $query, int $limit = 5)
     {

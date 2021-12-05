@@ -14,7 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="Jest już konto z takim adresem email"
+ * )
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -28,9 +31,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups("user:read")
+     * @Groups({"user:read", "main"})
      * @Assert\NotBlank()
-     * @Assert\Email()
+     * @Assert\Email(message="Proszę podać email.")
      */
     private $email;
 
@@ -41,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("user:read")
+     * @Groups({"user:read", "main"})
      */
     private $firstName;
 
@@ -65,7 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("main")
+     * @Groups({"user:read", "main"})
      */
     private $twitterUsername;
 
@@ -79,9 +82,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $articles;
 
-    //info dołożyłęm nullable bo nei poszły fixtures
+    //info dołożyłęm nullable bo nie poszły fixtures
+    // zmieic docelowo.
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
     private $agreedTermsAt;
 
@@ -358,6 +362,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->agreedTermsAt;
     }
+
 
     public function agreeToTerms()
     {

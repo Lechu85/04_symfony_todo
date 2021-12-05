@@ -14,6 +14,13 @@ import './bootstrap';
 // activates collapse functionality
 import { Collapse } from 'bootstrap';
 
+//import { autocomplete } from '@algolia/autocomplete-js';
+
+//ready infgo aby mieć pewośc, że dom jest w pełni załadowany
+
+//zamienic na div trzeba tenelement.
+
+
 /*
 import $ from 'jquery';
 

@@ -11,6 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ApiToken|null findOneBy(array $criteria, array $orderBy = null)
  * @method ApiToken[]    findAll()
  * @method ApiToken[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @return ApiToken[] Returns an array of ApiToken objects
  */
 class ApiTokenRepository extends ServiceEntityRepository
 {
@@ -19,9 +21,6 @@ class ApiTokenRepository extends ServiceEntityRepository
         parent::__construct($registry, ApiToken::class);
     }
 
-//    /**
-//     * @return ApiToken[] Returns an array of ApiToken objects
-//     */
     /*
     public function findByExampleField($value)
     {

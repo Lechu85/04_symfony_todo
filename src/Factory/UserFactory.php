@@ -45,9 +45,7 @@ final class UserFactory extends ModelFactory
             'firstName' => self::faker()->firstName(),
             'plainPassword' => 'tada',
             'isVerified' => true,
-            //'agreed_terms_at' => new \DateTime(),
 
-            //info Cannot set attribute "agreed_terms_at" for object "App\Entity\User" (not public and no setter).
         ];
     }
 
@@ -63,6 +61,8 @@ final class UserFactory extends ModelFactory
                          $this->passwordHasher->hashPassword($user, $user->getPlainPassword())
                      );
                  }
+                 $user->agreeToTerms();
+
              })
         ;
     }

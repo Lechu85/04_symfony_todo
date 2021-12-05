@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Article;
 use App\Form\ArticleFormType;
@@ -23,6 +23,7 @@ class ArticleAdminController extends AbstractController
     public function new(EntityManagerInterface $entityManager, Request $request)
     {
 
+        //info drugi argument służy do wypełnienia danych w polach formuylarzy , ...
         $form = $this->createForm(ArticleFormType::class);
 
         $form->handleRequest($request);
@@ -51,6 +52,7 @@ class ArticleAdminController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/admin/article", name="admin_article_list")
      */
@@ -62,6 +64,8 @@ class ArticleAdminController extends AbstractController
             'articles' => $articles,
         ]);
     }
+
+
     /**
      * @Route("/admin/article/{id}/edit", name="admin_article_edit")
      * @IsGranted("ROLE_ADMIN", subject="article")
@@ -70,7 +74,9 @@ class ArticleAdminController extends AbstractController
     {
 
 
-        $form = $this->createForm(ArticleFormType::class, $article);
+        $form = $this->createForm(ArticleFormType::class, $article, [
+            'include_published_at' => true,
+        ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())

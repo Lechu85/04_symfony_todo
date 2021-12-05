@@ -22,41 +22,41 @@ class ArticleFormType extends AbstractType
         $this->userRepository = $userRepository;
     }
 
-
+    //info metoda w której budujemy pola
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        //info jeżeli edytujemy formularz to klucz 'data' zwróci nam obiekt
+        $article = $options['data'] ?? null;
+        $isEdit = $article && $article->getId();//info jesli edycja
 
         $builder
             ->add('title', TextType::class, [
                 'help' => 'Wpisz coś ciekawego'
             ])
-            ->add('content')
-            ->add('publishedAt', DateTimeType::class, [
-                'widget' => 'single_text'
+            ->add('content', null, [ //jak jest null to zgaduje
+                'rows' => 15
             ])
-            ->add('author', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => function(User $user) {
-                    return sprintf('(%d) %s', $user->getId(), $user->getEmail());
-                },
-                //info bez tego pierwsz yautor bedzie zaznaczony domyślnie.
-                'placeholder' => 'Wybierz autora',
-                'choices' => $this->userRepository
-                    ->findAllEmailAlphabetical(),
-                'invalid_message' => 'Symfony is too smart for your hacking.'
+            ->add('author', UserSelectTextType::class, [
+                'disabled' => $isEdit
             ]);
         ;
 
+        if ($options['include_published_at']) {
+            $builder->add('publishedAt', DateTimeType::class, [
+                'widget' => 'single_text'
+            ]);
+        }
+
     }
 
+    //tutja jest konfiguracja dla wszystkicxh pól formularza
     public function configureOptions(OptionsResolver $resolver)
     {
-
         $resolver->setDefaults([
-            'data_class' => Article::class
+            'data_class' => Article::class,
+            'include_published_at' => false,
         ]);
 
     }
-
 
 }
