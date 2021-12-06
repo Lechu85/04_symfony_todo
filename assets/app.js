@@ -4,15 +4,32 @@
  * We recommend including the built version of this JavaScript file
  * (and its CSS file) in your base layout (base.html.twig).
  */
-
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
+
+
 
 // start the Stimulus application
 import './bootstrap';
 
 // activates collapse functionality
 import { Collapse } from 'bootstrap';
+
+
+//NOTE symfony casts
+// pierwszy sposób dołaczania wartości - jedna rzecz
+//const getNiceMessage = require('./get_nice_message')
+
+//NOTE symfony casts
+// drugi sposób
+import getNiceMessage from './get_nice_message'
+
+import './styles/autoload.css';
+
+console.log(getNiceMessage(6))
+
+
+
 
 //import { autocomplete } from '@algolia/autocomplete-js';
 

@@ -290,10 +290,6 @@ class Article
         }
     }
 
-
-    /*
-
-
     public function getLocation(): ?string
     {
         return $this->location;
@@ -303,6 +299,7 @@ class Article
     {
         $this->location = $location;
 
+        //NOTE jeżeli nie podano lokalizacji, albo lokalizacja jest pusta, to definiujemy drugi seter z null.
         if (!$this->location || $this->location === 'interstellar_space') {
             $this->setSpecificLocationName(null);
         }
@@ -321,7 +318,7 @@ class Article
 
         return $this;
     }
-*/
+
     /**
      * @return Collection|ArticleReference[]
      */

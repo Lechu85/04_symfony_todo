@@ -3,6 +3,8 @@
 body {
     font-family: spartan;
     color: #444;
+
+    background: green;
 }
 
 .jumbotron-img {
@@ -108,6 +110,8 @@ body {
     background-image: none;
 }
 
+
+
 .btn-question.disabled,
 .btn-question[disabled],
 fieldset[disabled] .btn-question,
@@ -135,3 +139,5 @@ fieldset[disabled] .btn-question.active {
 footer {
     background-color: #efefee;
 }
+
+

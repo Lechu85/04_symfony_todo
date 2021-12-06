@@ -12,13 +12,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
+//NOTE Extends AbstractController ale można zrobic extends BaseController i tam dolozyc swoje dla kazdego kontrolea funkcjes
 class ArticleAdminController extends AbstractController
 {
     //ROLE_ADMIN_ARTICLE
     /**
      * @Route("/admin/article/new", name="admin_article_new")
      * @IsGranted("ROLE_ADMIN")
+     *
+     * //nie trzeba ROLE_ADMIN bo jest w security.yaml
      */
     public function new(EntityManagerInterface $entityManager, Request $request)
     {
@@ -52,6 +54,31 @@ class ArticleAdminController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("admin/article/location-select", name="admin_article_location_select")
+     *
+     * NOTE: odzwolujemy siędo tego za pomocą ajaxa i buduje nam obiekt formularza z którego pobieramy częśc i zwracamy
+     * NOTE: nie rozumie jak to dziala m,ogladnaj eszcze raz chap[ter 39 fomr
+     */
+    public function getSpecificLocationSelect(Request $request)
+    {
+        $article = new Article();
+        $article->setLocation($request->query->get('location'));
+
+        //NOTE zbudujemy obiekt formularza i zwrócimy kawałek tego obiektu jako response
+        $form = $this->createForm(ArticleFormType::class, $article);
+
+
+        if (!$form->has('specificLocationName')) {
+            return new Response(null, 204); //NOTE response was successfull, but we don't have content to cent.
+        }
+
+        //NOTE if we have that field we want to render it
+        return $this->render('article_admin/_specific_location_name.html.twig', [
+            'articleForm' => $form->createView()
+        ]);
+
+    }
 
     /**
      * @Route("/admin/article", name="admin_article_list")
