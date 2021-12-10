@@ -34,12 +34,12 @@ class QuestionController extends AbstractController
         $this->isDebug = $isDebug;
     }
     /**
-     * dodalismy dla pagera {pager}, musimy być ostrozni, ponieważ to jest wildcard.
-     * Może zepsuć rout jezeli przypasuje pierwszy.
-     * <\d+> - ma być chyba liczba - digit
-     * Po dodaniu {page} do routa, trzeba przekazac parametr init $page = 1 i wywalamy obiekt Request. z parametrów funkcji
-     *
      * @Route("/{page<\d+>}", name="app_homepage")
+     *
+     * NOTE dodalismy dla pagera {pager}, musimy być ostrozni, ponieważ to jest wildcard.
+     *  Może zepsuć rout jezeli przypasuje pierwszy.
+     *  <\d+> - ma być chyba liczba - digit
+     *  Po dodaniu {page} do routa, trzeba przekazac parametr init $page = 1 i wywalamy obiekt Request. z parametrów funkcji
      */
     //public function homepage(EntityManagerInterface $entityManager) // tutaj przez entity managera wczytujemy pozniej repozytorium.,
     public function homepage(QuestionRepository $repository, int $page = 1) // tutaj przez entity managera wczytujemy pozniej repozytorium.,

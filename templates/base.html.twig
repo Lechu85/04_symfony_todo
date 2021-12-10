@@ -9,20 +9,28 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
               integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"/>
 
+        {# zostawic jedne poniższy link do awesome #}
+        <script src="https://use.fontawesome.com/28bf750a2b.js"></script>
         <link rel="stylesheet"href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic"/>
 
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
 
     {% block javascripts %}
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        {# <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script> #}
         {# usunac jquery, narazie dla starej wersji autoco[plete potrzebny i tyle :)  #}
 
         {{ encore_entry_script_tags('app') }}
     {% endblock %}
 
 </head>
-<body>
+<body
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        {{ stimulus_controller('user-api', {
+            url: path('app_user_api_me')
+        }) }}
+    {% endif %}
+>
 
     <div class="container-xl">
         <nav class="navbar navbar-expand-lg navbar-light bg-light px-1" style="height: 60px;">
@@ -99,6 +107,7 @@
         {% endfor %}
 
         {% block body %}{% endblock %}
+
         <footer class="mt-5 p-3 text-center">
             Made with <i style="color: red;" class="fa fa-heart"></i> by the guys and gals at <a style="color: #444; text-decoration: underline;" href="https://symfonycasts.com">SymfonyCasts</a>
         </footer>

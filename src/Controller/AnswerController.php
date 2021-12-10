@@ -30,12 +30,20 @@ class AnswerController extends BaseController
         ]);
     }
 
-
     /**
      * @Route("/answers/{id}/vote", methods="POST", name="answer_vote")
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      */
-    public function answerVote(Answer $answer, LoggerInterface $logger, Request $request, EntityManagerInterface $en)    {
+    public function answerVote(Answer $answer, LoggerInterface $logger, Request $request, EntityManagerInterface $en) {
+
+        //NOTE logujemy informacje dla zabawy
+        $logger->info('{user} is voting on answer {answer}', [
+            //NOTE możemy również użyć getEmail() itd.
+            // mamy tutaj podpowiedzi metod, ponieważ daliśmy swój BaseController.
+            'user' => $this->getUser()->getUserIdentifier(),
+            'answer' => $answer->getId(),
+        ]);
+
         $data = json_decode($request->getContent(), true);
         $direction = $data['direction'] ?? 'up';
 

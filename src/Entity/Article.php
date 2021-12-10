@@ -193,7 +193,7 @@ class Article
 
     public function getImagePath()
     {
-        return UploaderHelper::ARTICLE_IMAGE.'/'.$this->getImageFilename();
+        return 'imageeeeeellech'; //UploaderHelper::ARTICLE_IMAGE.'/'.$this->getImageFilename();
     }
 
     /**

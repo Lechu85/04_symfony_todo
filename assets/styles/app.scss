@@ -1,0 +1,14 @@
+@import 'helper/variables';
+
+@import '~bootstrap';
+
+@import './layout/_header';
+@import './layout/_footer';
+
+@import './components/_ad';
+@import './components/_articles';
+@import './components/_profile';
+@import './components/_questions';
+@import './components/_votes';
+
+@import './components/_autoload';

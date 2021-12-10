@@ -18,7 +18,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
     public function __construct(Environment $twig)
     {
         $this->twig = $twig;
-        $this->cms_menu = ['admin_article_list' => 'Artykuły', 'admin_article_new' => 'Dodaj artykuł'];
+        $this->cms_menu = ['admin_article_list' => 'Admin Artykuły', 'article_homepage' => 'Artkuły'];//, 'admin_article_new' => 'Dodaj artykuł'
 
     }
     public function onControllerEvent(ControllerEvent $event)

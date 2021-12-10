@@ -24,7 +24,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_homepage")
+     * @Route("/news", name="article_homepage")
      */
     public function homepage(ArticleRepository $repository)
     {
@@ -38,9 +38,10 @@ class ArticleController extends AbstractController
     /**
      * @Route("/news/{slug}", name="article_show")
      */
-    public function show(Article $article, SlackClient $slack)
+    public function show(Article $article)//, SlackClient $slack
     {
         if ($article->getSlug() === 'khaaaaaan') {
+
             $slack->sendMessage('Kahn', 'Ah, Kirk, my old friend...');
         }
 
@@ -50,7 +51,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/news/{slug}/heart", name="article_toggle_heart", methods={"POST"})
+     * @Route("/news/{slug}/heart", name="article_toggle_heart")//, methods={"POST"}
      */
     public function toggleArticleHeart(Article $article, LoggerInterface $logger, EntityManagerInterface $em)
     {
@@ -61,4 +62,5 @@ class ArticleController extends AbstractController
 
         return new JsonResponse(['hearts' => $article->getHeartCount()]);
     }
+
 }

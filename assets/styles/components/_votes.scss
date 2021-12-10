@@ -1,0 +1,33 @@
+
+.vote-arrows, .vote-arrows .btn {
+	font-size: 1.5rem;
+}
+
+.vote-arrows .btn {
+	color: #444;
+	padding: 0;
+}
+
+.vote-arrows span {
+	font-size: 1rem;
+}
+
+.vote-up:hover {
+	color: #3D9970;
+}
+.vote-down:hover {
+	color: #FF4136;
+}
+
+.vote-arrows-alt .vote-up:hover {
+	color: #3D9970;
+}
+.vote-arrows-alt .vote-down:hover {
+	color: rgba(179, 20, 12, 0.63);
+}
+
+.btn-question {
+	color: #FFFFFF;
+	background-color: #ED7458;
+	border-color: #D45B3F;
+}

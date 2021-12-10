@@ -36,6 +36,7 @@ class ApiToken
     {
         $this->token = bin2hex(random_bytes(60));
         $this->user = $user;
+        //NOTE token będzie aktywny przez godzine.
         $this->expiresAt = new \DateTime('+1 hour');
     }
 
