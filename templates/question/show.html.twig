@@ -16,7 +16,7 @@
                                     <small>
                                         {% if question.askedAt %}
                                             Asked <br>
-                                            {{ question.askedAt|ago }}
+                                            {{ question.askedAt|date("m/d/Y") }}
                                         {% else %}
                                             (unpublished)
                                         {% endif %}
@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="q-display p-3">
                                     <i class="fa fa-quote-left mr-3"></i>
-                                    <p class="d-inline">{{ question.question|markdown }}</p>
+                                    <p class="d-inline">{{ question.question }}</p>
                                     <p class="pt-4"><strong>--{{ question.owner.displayName }} ({{ question.owner.email }})</strong></p>
                                 </div>
                             </div>

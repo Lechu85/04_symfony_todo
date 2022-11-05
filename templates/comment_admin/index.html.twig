@@ -50,7 +50,7 @@
                             {{ comment.content|truncate }}
                         </td>
                         <td>
-                            {{ comment.createdAt|ago }}
+                            {{ comment.createdAt|date("m/d/Y") }}
                         </td>
                     </tr>
                 {% else %}

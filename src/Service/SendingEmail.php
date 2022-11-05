@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
-use Knp\Snappy\Pdf;
+//use Knp\Snappy\Pdf;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -14,16 +14,16 @@ class SendingEmail
 {
     private MailerInterface $mailer;
     private Environment $twig;
-    private Pdf $pdf;
+    //private Pdf $pdf;
     private EntrypointLookupInterface $entrypointLookup;
 
-
-    public function __construct(MailerInterface $mailer, Environment $twig, Pdf $pdf, EntrypointLookupInterface $entrypointLookup)
+// Pdf $pdf,
+    public function __construct(MailerInterface $mailer, Environment $twig,EntrypointLookupInterface $entrypointLookup)
     {
 
         $this->mailer = $mailer;
         $this->twig = $twig;
-        $this->pdf = $pdf;
+        //$this->pdf = $pdf;
         $this->entrypointLookup = $entrypointLookup;
     }
 
@@ -57,7 +57,7 @@ class SendingEmail
         //info Metoda ta bierze treść html zapisuje w pliku tymczasowym
         // jeżeli wszystko pójdzie ok, to zmienna pdf będzie tekstem z zawartością poprawnym plikiem pdf.
         // Możemy z tym zrobić co chcemy. Np zapisac do pliku albo załączyc do emaila.
-        $pdf = $this->pdf->getOutputFromHtml($html);
+        //$pdf = $this->pdf->getOutputFromHtml($html);
 
 
         $email = (new TemplatedEmail())
@@ -69,8 +69,8 @@ class SendingEmail
             ->context([
                 'author' => $author,
                 'articles' => $articles
-            ])
-            ->attach($pdf, sprintf('weekly-report-%s.pdf', date('Y-m-d')));
+            ]);
+            //->attach($pdf, sprintf('weekly-report-%s.pdf', date('Y-m-d')));
         //info jak mamy coś dużego, to możemy zrobić fopen() i podać (file handle) do pliku
 
         $this->mailer->send($email);

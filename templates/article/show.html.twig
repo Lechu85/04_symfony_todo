@@ -12,7 +12,7 @@
                 <br>
                 <span class="align-left article-details"><img class="article-author-img rounded-circle" src="{{ asset('build/images/alien-profile.png') }}"> {{ article.author }} </span>
                 <span class="pl-2 article-details">
-                    {{ article.publishedAt ? article.publishedAt|ago : 'unpublished' }}
+                    {{ article.publishedAt ? article.publishedAt|date("m/d/Y") : 'unpublished' }}
                 </span>
                 <span class="pl-2 article-details">
                     <span class="js-like-article-count">{{ article.heartCount }}</span>
@@ -32,7 +32,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="article-text">
-                {{ article.content|markdown }}
+                {{ article.content }}
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@
                     <img class="comment-img rounded-circle" src="{{ asset('build/images/alien-profile.png') }}">
                     <div class="comment-container d-inline-block pl-3 align-top">
                         <span class="commenter-name">{{ comment.authorName }}</span>
-                        <small>about {{ comment.createdAt|ago }}</small>
+                        <small>about {{ comment.createdAt }}</small>
                         {% if comment.isDeleted %}
                             <span class="fa fa-close"></span> deleted
                         {% endif %}

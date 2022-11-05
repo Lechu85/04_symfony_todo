@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin\Admin;
+namespace App\Controller\Admin;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Repository\CommentRepository;

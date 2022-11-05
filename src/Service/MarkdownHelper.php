@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
+//use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -19,10 +19,11 @@ class MarkdownHelper
     private $logger;
     private Security $security;
 
-    public function __construct(MarkdownParserInterface $markdownParser, CacheInterface $cache, bool $isDebug, LoggerInterface $mdLogger, Security $security)
+	//MarkdownParserInterface $markdownParser,
+    public function __construct(CacheInterface $cache, bool $isDebug, LoggerInterface $mdLogger, Security $security)
     {
 
-        $this->markdownParser = $markdownParser;
+        //$this->markdownParser = $markdownParser;
         $this->cache = $cache;
         $this->isDebug = $isDebug;
         //dump($isDebug);
