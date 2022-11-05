@@ -25,11 +25,12 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            entry_point: App\Security\LoginFormAuthenticator
+            entry_point: App\Security\LoginFormAuthenticator #NOTE miejce które wyświetli się userowi jeżeli bedzie chciałsiędostać do zabezpieczonej strony, czyli redirect /login
             #mozemy tutaj podac kazdy serwis, który implementuje AuthenticationEntryPointInterface
             custom_authenticator:
                 - App\Security\LoginFormAuthenticator
                 - App\Security\DummyAuthenticator
+                - App\Security\ApiTokenAuthenticator
             logout: true
 
             remember_me:

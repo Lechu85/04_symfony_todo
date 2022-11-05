@@ -23,7 +23,7 @@ class UserRepository extends ServiceEntityRepository
     /**
      * @return User[]
      */
-    public function findAllEmailAlphabetical()
+    public function findAllEmailAlphabetical(): array
     {
         return $this->createQueryBuilder('u')
             ->orderBy('u.email', 'ASC')
@@ -37,7 +37,7 @@ class UserRepository extends ServiceEntityRepository
      *
      * NOTE: this return array of User object
      */
-    public function findAllMatching(string $query, int $limit = 5)
+    public function findAllMatching(string $query, int $limit = 5): array
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.email LIKE :query')
@@ -57,7 +57,5 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-
 
 }

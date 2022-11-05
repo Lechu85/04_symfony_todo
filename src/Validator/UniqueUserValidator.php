@@ -39,7 +39,7 @@ class UniqueUserValidator extends ConstraintValidator
         }
 
         // TODO: implement the validation here
-        $this->context->buildViolation($constraint->message)
+        $this->context->buildViolation($constraint->message) //Violation - naruszenie
             //->setParameter('{{ value }}', $value)
             ->addViolation();
     }

@@ -2,8 +2,11 @@
 
 namespace App\Factory;
 
+use App\Entity\ApiToken;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
@@ -30,12 +33,14 @@ use Zenstruck\Foundry\Proxy;
 final class UserFactory extends ModelFactory
 {
     private UserPasswordHasherInterface $passwordHasher;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct(UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager)
     {
         parent::__construct();
 
         $this->passwordHasher = $passwordHasher;
+        $this->entityManager = $entityManager;
     }
 
     protected function getDefaults(): array
@@ -55,6 +60,11 @@ final class UserFactory extends ModelFactory
         // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
         return $this
              ->afterInstantiate(function(User $user) {
+
+                 $apiToken = new ApiToken($user);
+                 $this->entityManager->persist($apiToken);
+
+
                  //jesli hasło istnieje to je kodujwemy
                  if ($user->getPlainPassword()) {
                      $user->setPassword(
@@ -63,7 +73,12 @@ final class UserFactory extends ModelFactory
                  }
                  $user->agreeToTerms();
 
-             })
+                 //PYTANIE - Jak tutaj wstrzyknac objectManager $manager aby zrobić persist? w metodzie, czy w kontruktorze? Nie działało.
+                 //NOTE Miałem problem ,żeby ddoać apitoken factory, zdecydoweałem dodawać useroi ręcznie, nie z automtu przez fixtures.
+
+
+                  $user->addApiToken($apiToken);
+             });
         ;
     }
 

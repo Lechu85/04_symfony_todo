@@ -16,6 +16,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
+
     public function load(ObjectManager $manager): void
     {
         TagFactory::createMany(100);
@@ -28,7 +29,6 @@ class AppFixtures extends Fixture
                 'tags' => TagFactory::randomRange(0, 5) # to zwraca zawsze jednen wynik. Random wykonywane jest tylko raz w tym przypadku
             ];
         }); //drugi parametr to ovveride (nadpisany)
-
 
         //drgui parasmetr to to co chcemy nadpisac.
         //QuestionFactory::createOne();
@@ -79,7 +79,6 @@ class AppFixtures extends Fixture
         //$question = QuestionFactory::createOne()->object();//lazy way using our factory - zwraca to proxy object+
 
         //nowe elementy
-
 
     }
 }

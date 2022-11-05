@@ -43,13 +43,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $this->router = $router;
     }
 
-    //info serce naszego authenticate - zadaniem tej klasy jest oznaczenie kim jest ten user który próbuje się logować.
-    //info który obiekt to jest i drugie, dowód że to jest ten user w formie bedzie to hasło
-    //info komunikujemy to zwracajac passport obiekt
+    //NOTE: serce naszego authenticate - zadaniem tej klasy jest oznaczenie kim jest ten user który próbuje się logować.
+    // który obiekt to jest i drugie, dowód że to jest ten user w formie bedzie to hasło
+    // komunikujemy to zwracajac passport obiekt
 
     public function authenticate(Request $request): PassportInterface
     {
-        // TODO: Implement authenticate() method.
 
         $email = $request->request->get('email');
         $password = $request->request->get('password');
@@ -57,27 +56,27 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         //credentials to hasło
 
         return new Passport(
-            //info tutaj tzw UserProvider dostarcza informacje o userze, w config jest provider info
-            //info tutaj user intentyfikator. dla nas to email
-            //info możemy wstawić zapytanie niestandardowe o usera.
+            //NOTE tutaj tzw UserProvider dostarcza informacje o userze, w config jest provider info
+            // tutaj user intentyfikator. dla nas to email
+            // możemy wstawić zapytanie niestandardowe o usera.
 
-            //info UserBadge jest by dostarczyc User object
-            //info poniewaz daliśmy drugi parametr to my zrobiliśmy ta prace.
-            //info ale jeśli dostarczysz jeden parametr to UserProviderr zrobi tą robote.
+            //NOTE UserBadge jest by dostarczyc User object
+            // poniewaz daliśmy drugi parametr to my zrobiliśmy ta prace.
+            // ale jeśli dostarczysz jeden parametr to UserProviderr zrobi tą robote.
             new UserBadge($email, function ($userIdentifier) {
 
                 $user = $this->userRepository->findOneBy(['email' => $userIdentifier]);
-                //info tutaj możesz użyć dowolnego zapytania
+                //NOTE tutaj możesz użyć dowolnego zapytania
 
                 if (!$user) {
                     throw new UserNotFoundException();
-                    //info jak nie ma musimy wyrzucic wyjątek
+                    //NOTE jak nie ma musimy wyrzucic wyjątek
                 }
 
                 return $user;
             }),
 
-            //info tutaj wersja automatyczna, sam hashuje
+            //NOTE tutaj wersja automatyczna, sam hashuje
             new PasswordCredentials($password),
             [
                 new CsrfTokenBadge(
@@ -96,11 +95,11 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
         );
 
-        //info obiekt ten przetrzymuje badges i credential badges.
+        //NOTE obiekt ten przetrzymuje badges i credential badges.
     }
 
-    //info metoda ta może np przekierować użytkownika na inny route
-    //info może zwrócić null, żeby kontynuować prace normalnie na komtrolerze w przypadku API autoryzacji.
+    //NOTE metoda ta może np przekierować użytkownika na inny route
+    // może zwrócić null, żeby kontynuować prace normalnie na komtrolerze w przypadku API autoryzacji.
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
 
