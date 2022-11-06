@@ -33,19 +33,15 @@ class Task
     private $status;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $user;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -142,17 +138,7 @@ class Task
         return $this;
     }
 
-    public function getUser(): ?int
-    {
-        return $this->user;
-    }
 
-    public function setUser(?int $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 
     public function getDeleted(): ?bool
     {
