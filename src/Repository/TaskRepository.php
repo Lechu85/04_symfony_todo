@@ -44,11 +44,10 @@ class TaskRepository extends ServiceEntityRepository
 
 		if (count($errors) > 0) {
 
-			$formatedViolationList = [];
+			//$formatedViolationList = [];
 			$formatedViolationListString = '';
 			foreach($errors as $error) {
-				//$formatedViolationList[] = array($error->getPropertyPath() => $error->getMessage());
-				$formatedViolationList[$error->getPropertyPath()][] = $error->getMessage();
+				//$formatedViolationList[$error->getPropertyPath()][] = $error->getMessage();
 				$formatedViolationListString .= "\n - ".$error->getMessage();
 			}
 
@@ -58,7 +57,6 @@ class TaskRepository extends ServiceEntityRepository
 			);
 
 		}
-
 
 		$this->entityManager->persist($task);
 		$this->entityManager->flush();
