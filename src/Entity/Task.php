@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use App\Repository\TaskRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+//todo - validacja właściwości status nie przeiega pomyślnie w przypadku innego typu danych wyrzuca bład.
 
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
@@ -19,21 +22,31 @@ class Task
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Podaj tresc zadania")
+     * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *     minMessage="Zadanie zbyt krótkie. Podaj przynajmniej 3 literki.",
+     *     maxMessage="Zadanie zbyt długie. Podaj maksymalnie 255 znaków")
      */
     private $task;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank(message="Podaj opis zadania")
      */
     private $description;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Assert\NotBlank(message="Podaj status zadania")
+     * @Assert\Type(type="integer", message="Wartość {{ value }} nie jest poprawna liczba {{ type }}." )
      */
     private $status;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="Podaj date dodania zadania")
      */
     private $createdAt;
 
@@ -41,7 +54,6 @@ class Task
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
-
 
     /**
      * @ORM\Column(type="boolean", nullable=true)

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
+
 class TaskApiController extends AbstractController
 {
 	private EntityManagerInterface $entityManager;
@@ -22,23 +23,23 @@ class TaskApiController extends AbstractController
 		$this->taskRepository = $entityManager->getRepository(Task::class);
 	}
 
+	#[Route('/api/task/{id}', name: 'app_task_edit', methods: 'PUT')]
+	public function edit(Request $request, int $id): JsonResponse
+	{
+
+		$task = $this->taskRepository->findOneBy(['id' => $id]);
+		$result =  $this->taskRepository->updateTask($task, $request);
+
+		return new JsonResponse( ['status' => $result['msg']] , $result['status'] );
+	}
+
 	#[Route('/aaaaa', name: 'app_task_addd', methods: 'POST')]
 	public function create(Request $request): JsonResponse
 	{
 
-		$data = $request->getContent();
+		$result = $this->taskRepository->addTask($request);
 
-		$task = new Task();
-
-		$task->setTask('Nowe zadanieee z API')
-			->setDescription('opis tego xadaniaaaa')
-			->setStatus(1)
-			->setCreatedAt(new \DateTimeImmutable());
-
-		$this->entityManager->persist($task);
-		$this->entityManager->flush();
-
-		return new JsonResponse('Zadanie zostalo utworzone! ID:'.$task->getId(), Response::HTTP_CREATED);
+		return new JsonResponse(['status' => $result['msg']], $result['status']);
 
 	}
 
