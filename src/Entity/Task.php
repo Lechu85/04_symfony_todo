@@ -33,7 +33,6 @@ class Task
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Assert\NotBlank(message="Podaj opis zadania")
      */
     private $description;
 
